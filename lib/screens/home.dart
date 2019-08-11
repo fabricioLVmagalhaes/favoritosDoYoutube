@@ -24,7 +24,9 @@ class Home extends StatelessWidget {
         actions: <Widget>[
           Align(
             alignment: Alignment.center,
-            child: Text("0"),
+            child: StreamBuilder(
+                builder: null
+            ),
           ),
           IconButton(
             icon: Icon(Icons.star),
