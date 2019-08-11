@@ -6,6 +6,8 @@ import 'package:flutter_tube/delegates/data_search.dart';
 import 'package:flutter_tube/models/video.dart';
 import 'package:flutter_tube/widgets/videos_tile.dart';
 
+import 'favorites.dart';
+
 class Home extends StatelessWidget {
 
 
@@ -38,7 +40,9 @@ class Home extends StatelessWidget {
           ),
           IconButton(
             icon: Icon(Icons.star),
-            onPressed: () {},
+            onPressed: () {
+              Navigator.of(context).push(MaterialPageRoute(builder: (context)=>Favorites()));
+            },
           ),
           IconButton(
             icon: Icon(Icons.search),
