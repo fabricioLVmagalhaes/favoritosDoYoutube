@@ -5,8 +5,13 @@ import 'package:flutter_tube/delegates/data_search.dart';
 import 'package:flutter_tube/widgets/videos_tile.dart';
 
 class Home extends StatelessWidget {
+
+
   @override
   Widget build(BuildContext context) {
+    final bloc = BlocProvider.of<VideosBlock>(context);
+
+
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: AppBar(
@@ -28,25 +33,36 @@ class Home extends StatelessWidget {
           IconButton(
             icon: Icon(Icons.search),
             onPressed: () async {
-              String result = await showSearch(
-                  context: context, delegate: DataSearch());
-              if (result != null) BlocProvider
-                  .of<VideosBlock>(context)
-                  .inSearch
-                  .add(result);
+              String result =
+                  await showSearch(context: context, delegate: DataSearch());
+              if (result != null)
+                bloc.inSearch.add(result);
             },
           )
         ],
       ),
       body: StreamBuilder(
-          stream: BlocProvider
-              .of<VideosBlock>(context).outVideos,
-          builder: (context, snapshot){
-            if(snapshot.hasData)
+          stream: bloc.outVideos,
+          initialData: [],
+          builder: (context, snapshot) {
+            if (snapshot.hasData)
               return ListView.builder(
-                  itemBuilder: (context, index) {
+                itemBuilder: (context, index) {
+                  if (index < snapshot.data.length) {
                     return VideoTile(snapshot.data[index]);
+                  } else if(index > 1) {
+                    bloc.inSearch.add(null);
+                    return Container(
+                      height: 40.0,
+                      width: 40.0,
+                      alignment: Alignment.center,
+                      child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(Colors.red),),
+                    );
+                  } else {
+                    return Container();
                   }
+                },
+                itemCount: snapshot.data.length + 1,
               );
             else
               return Container();
