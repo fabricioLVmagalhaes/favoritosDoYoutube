@@ -2,11 +2,13 @@ import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tube/blocks/videos_block.dart';
 import 'package:flutter_tube/delegates/data_search.dart';
+import 'package:flutter_tube/widgets/videos_tile.dart';
 
 class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.black,
       appBar: AppBar(
         title: Container(
           height: 70,
@@ -41,7 +43,11 @@ class Home extends StatelessWidget {
               .of<VideosBlock>(context).outVideos,
           builder: (context, snapshot){
             if(snapshot.hasData)
-              return ListView.builder(itemBuilder: null);
+              return ListView.builder(
+                  itemBuilder: (context, index) {
+                    return VideoTile(snapshot.data[index]);
+                  }
+              );
             else
               return Container();
           }),
